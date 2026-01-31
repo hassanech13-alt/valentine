@@ -6,66 +6,70 @@
     <title>Be My Valentine?</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <style>
         :root { --p: #ff4d6d; --a: #ff8fa3; --dr: #800f2f; --d: #1a1a2e; }
         * { box-sizing: border-box; }
         body { margin: 0; padding: 0; width: 100vw; height: 100vh; background: var(--d); font-family: 'Poppins', sans-serif; display: flex; justify-content: center; align-items: center; overflow: hidden; color: white; }
         .night-sky { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #2e1a2e 0%, #1a1a2e 100%); z-index: -2; }
-        .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 40px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.5); width: 90%; max-width: 450px; z-index: 10; position: relative; }
-        .title { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: var(--a); margin: 10px 0 20px 0; }
-        .timer { background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 20px; margin-bottom: 30px; }
-        #counter { font-size: 3.2rem; font-weight: 800; text-shadow: 0 0 15px var(--p); line-height: 1; }
-        .label { display: block; margin-top: 10px; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: var(--a); }
+        .valentine-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 40px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.5); width: 90%; max-width: 450px; z-index: 10; position: relative; }
+        .title-font { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: var(--a); margin: 10px 0 20px 0; }
+        .timer-display { background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 20px; margin-bottom: 30px; }
+        #minutesCounter { font-size: 3.2rem; font-weight: 800; text-shadow: 0 0 15px var(--p); line-height: 1; }
+        .timer-label { display: block; margin-top: 10px; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: var(--a); }
         .btn-group { display: flex; flex-direction: column; gap: 15px; align-items: center; }
-        .btn { color: white; border: none; padding: 15px; border-radius: 50px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: 100%; max-width: 280px; }
-        .yes { background: var(--p); box-shadow: 0 0 20px rgba(255, 77, 109, 0.5); }
-        .no { background: var(--dr); box-shadow: 0 0 20px rgba(128, 15, 47, 0.4); }
+        .glow-button { color: white; border: none; padding: 15px; border-radius: 50px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: 100%; max-width: 280px; }
+        .yes-style { background: var(--p); box-shadow: 0 0 20px rgba(255, 77, 109, 0.5); }
+        .no-style { background: var(--dr); box-shadow: 0 0 20px rgba(128, 15, 47, 0.4); position: relative; }
+        .heart-animation-wrapper { height: 80px; display: flex; justify-content: center; margin-bottom: 20px; }
+        .main-heart { background-color: var(--p); height: 40px; width: 40px; transform: rotate(-45deg); animation: heartbeat 1.2s infinite; position: relative; }
+        .main-heart:before, .main-heart:after { content: ""; background-color: var(--p); border-radius: 50%; height: 40px; width: 40px; position: absolute; }
+        .main-heart:before { top: -20px; left: 0; } .main-heart:after { left: 20px; top: 0; }
+        @keyframes heartbeat { 0%, 100% { transform: rotate(-45deg) scale(1); } 50% { transform: rotate(-45deg) scale(1.15); } }
         .hidden { display: none !important; }
-        .heart-wrap { height: 80px; display: flex; justify-content: center; margin-bottom: 20px; }
-        .heart { background-color: var(--p); height: 40px; width: 40px; transform: rotate(-45deg); animation: beat 1.2s infinite; position: relative; }
-        .heart:before, .heart:after { content: ""; background-color: var(--p); border-radius: 50%; height: 40px; width: 40px; position: absolute; }
-        .heart:before { top: -20px; left: 0; } .heart:after { left: 20px; top: 0; }
-        @keyframes beat { 0%, 100% { transform: rotate(-45deg) scale(1); } 50% { transform: rotate(-45deg) scale(1.15); } }
+        .celebration-text { font-size: 1.1rem; line-height: 1.5; color: white; }
+        .celebration-icon { font-size: 4rem; margin: 20px 0; }
     </style>
 </head>
 <body>
     <div class="night-sky"></div>
-    <div class="card">
-        <div id="setup">
-            <div class="heart-wrap"><div class="heart"></div></div>
-            <h1 class="title">Will you be my Valentine?</h1>
-            <div class="timer">
-                <div id="counter">0</div>
-                <span class="label">Minutes Together</span>
+    <div class="valentine-card">
+        <div id="setupContent">
+            <div class="heart-animation-wrapper"><div class="main-heart"></div></div>
+            <h1 class="title-font">Will you be my Valentine?</h1>
+            <div class="timer-display">
+                <div id="minutesCounter">0</div>
+                <span class="timer-label">Minutes Together</span>
             </div>
             <div class="btn-group">
-                <button id="yesBtn" class="btn yes">Yes, I'd Love To!</button>
-                <button id="noBtn" class="btn no">No</button>
+                <button id="yesBtn" class="glow-button yes-style">Yes, I'd Love To!</button>
+                <button id="noBtn" class="glow-button no-style">No</button>
             </div>
         </div>
-        <div id="success" class="hidden">
-            <h2 class="title">It's a Date! ❤️</h2>
-            <p style="font-size: 1.2rem;">See you on the 14th!</p>
+        <div id="successContent" class="hidden">
+            <h2 class="title-font">It's a Date! ❤️</h2>
+            <div class="celebration-icon">💖</div>
+            <p class="celebration-text">I've loved every minute together.<br>See you on the 14th!</p>
         </div>
     </div>
-    <audio id="music" loop><source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg"></audio>
+    <audio id="valentineMusic" loop><source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg"></audio>
     <script>
-        const start = new Date(2024, 10, 30);
-        function update() {
-            const mins = Math.floor((new Date() - start) / 60000);
-            document.getElementById('counter').innerText = mins.toLocaleString();
+        const firstDate = new Date(2024, 10, 30); 
+        function updateTimer() {
+            const mins = Math.floor((new Date() - firstDate) / 60000);
+            document.getElementById('minutesCounter').innerText = mins.toLocaleString();
         }
-        setInterval(update, 1000); update();
-        const no = document.getElementById('noBtn');
-        no.addEventListener('mouseover', () => {
-            no.style.position = 'fixed';
-            no.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-            no.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+        setInterval(updateTimer, 1000); updateTimer();
+        const noBtn = document.getElementById('noBtn');
+        noBtn.addEventListener('mouseover', () => {
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = Math.random() * (window.innerWidth - 150) + 'px';
+            noBtn.style.top = Math.random() * (window.innerHeight - 50) + 'px';
         });
         document.getElementById('yesBtn').addEventListener('click', () => {
-            document.getElementById('setup').classList.add('hidden');
-            document.getElementById('success').classList.remove('hidden');
-            document.getElementById('music').play();
+            document.getElementById('setupContent').classList.add('hidden');
+            document.getElementById('successContent').classList.remove('hidden');
+            document.getElementById('valentineMusic').play();
             confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
         });
     </script>
