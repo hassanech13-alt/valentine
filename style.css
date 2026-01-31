@@ -14,7 +14,7 @@ body {
     height: 100vh;
     background: var(--dark);
     font-family: 'Poppins', sans-serif;
-    overflow: hidden; /* Prevents scrolling */
+    overflow: hidden;
 }
 
 .night-sky {
@@ -24,7 +24,6 @@ body {
     z-index: -1;
 }
 
-/* Force centering of the card */
 .container {
     display: flex;
     justify-content: center;
@@ -46,6 +45,7 @@ body {
     width: 100%;
     max-width: 450px;
     position: relative;
+    z-index: 10;
 }
 
 .title-font {
@@ -55,7 +55,6 @@ body {
     margin: 10px 0 20px 0;
 }
 
-/* Timer Styling */
 .timer-display {
     background: rgba(0, 0, 0, 0.3);
     padding: 20px;
@@ -80,7 +79,6 @@ body {
     color: var(--accent);
 }
 
-/* Buttons */
 .btn-group {
     display: flex;
     flex-direction: column;
@@ -97,7 +95,7 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    width: 100%; /* Buttons fill the card width */
+    width: 100%;
     max-width: 280px;
 }
 
@@ -109,17 +107,23 @@ body {
 .no-style {
     background: var(--dark-rose);
     box-shadow: 0 0 20px rgba(128, 15, 47, 0.4);
-    position: relative; /* Necessary for the runaway script */
 }
 
-/* CSS Heart */
-.heart-animation-wrapper { height: 80px; margin-bottom: 20px; position: relative; display: flex; justify-content: center; }
+.heart-animation-wrapper { 
+    height: 80px; 
+    margin-bottom: 20px; 
+    position: relative; 
+    display: flex; 
+    justify-content: center; 
+}
+
 .main-heart {
     background-color: var(--primary);
     height: 40px; width: 40px;
     transform: rotate(-45deg);
     animation: heartbeat 1.2s infinite;
 }
+
 .main-heart:before, .main-heart:after {
     content: ""; background-color: var(--primary);
     border-radius: 50%; height: 40px; width: 40px; position: absolute;
