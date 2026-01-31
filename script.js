@@ -1,5 +1,6 @@
 const firstDate = new Date(2024, 10, 30); // Nov 30, 2024
 
+// Update the Minutes Counter
 function updateTimer() {
     const diff = new Date() - firstDate;
     const minutes = Math.floor(diff / (1000 * 60));
@@ -9,9 +10,9 @@ function updateTimer() {
 setInterval(updateTimer, 1000);
 updateTimer();
 
+// No Button Runaway Logic
 const noBtn = document.getElementById('noBtn');
 noBtn.addEventListener('mouseover', () => {
-    // Moves button to a random spot on the entire screen
     const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
     const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
     
@@ -20,6 +21,7 @@ noBtn.addEventListener('mouseover', () => {
     noBtn.style.top = y + 'px';
 });
 
+// Yes Button Event
 document.getElementById('yesBtn').addEventListener('click', () => {
     document.getElementById('setupContent').classList.add('hidden');
     document.getElementById('successContent').classList.remove('hidden');
@@ -34,7 +36,7 @@ document.getElementById('yesBtn').addEventListener('click', () => {
     }
 });
 
-// Heart background generator
+// Create Falling Background Hearts
 function createHeart() {
     const heart = document.createElement('div');
     heart.innerHTML = '❤️';
