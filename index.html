@@ -31,7 +31,7 @@
             width: 90%; max-width: 400px; z-index: 10; 
         }
 
-        .title-font { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: var(--a); margin-bottom: 20px; }
+        .title-font { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: var(--a); margin-bottom: 20px; }
         
         .timer-display { background: rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 20px; margin-bottom: 25px; }
         #minutesCounter { font-size: 2.5rem; font-weight: 800; text-shadow: 0 0 10px var(--p); color: white; }
@@ -50,18 +50,46 @@
         .no-style { background: var(--dr); position: relative; z-index: 100; }
 
         /* Style de la box "Reveal" */
-        .reveal-box {
+        #revealBtn {
             margin-top: 20px;
             background: rgba(255, 255, 255, 0.15);
             border: 2px dashed var(--a);
             padding: 15px;
             border-radius: 15px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.5s ease;
             animation: pulse 2s infinite;
         }
-        .reveal-box:hover { background: rgba(255, 255, 255, 0.25); }
-        
+
+        /* Animation d'évaporation */
+        .evaporate {
+            opacity: 0;
+            transform: translateY(-20px) scale(1.2);
+            filter: blur(10px);
+            pointer-events: none;
+        }
+
+        #restaurantInfo {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.8s ease;
+            margin-top: -40px; /* Pour prendre la place du bouton */
+        }
+
+        #restaurantInfo.show {
+            opacity: 1;
+            transform: translateY(0);
+            margin-top: 20px;
+        }
+
+        .resto-link {
+            color: var(--a);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(255, 143, 163, 0.5);
+        }
+
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.03); }
@@ -105,65 +133,11 @@
             <h2 class="title-font">C'est un rendez-vous ! ❤️</h2>
             <div style="font-size: 3.5rem; margin: 10px;">💖</div>
             
-            <p style="font-size: 0.9rem; opacity: 0.9;">See u at 7:30PM ON THURSDAY cutie :)</p>
+            <p style="font-size: 1.1rem; font-weight: 600;">See u at 7:30PM ON THURSDAY cutie :)</p>
             
-            <div class="reveal-box" onclick="window.open('https://share.google/pbk0ZcziFNFKalzCQ', '_blank')">
-                <span style="font-weight: 600; font-size: 1rem;">📍 Tap to reveal the meeting point</span>
+            <div id="revealBtn">
+                <span style="font-weight: 600; font-size: 1rem;">📍 Tap to reveal our meeting point</span>
             </div>
 
-            <p style="margin-top: 20px; font-size: 0.8rem; font-style: italic;">Chaque minute compte avec toi.<br>Vivement le 14 février !</p>
-        </div>
-    </div>
-
-    <script>
-        // --- COMPTEUR ---
-        const firstDate = new Date(2024, 10, 30); 
-        function updateTimer() {
-            const mins = Math.floor((new Date() - firstDate) / 60000);
-            document.getElementById('minutesCounter').innerText = mins.toLocaleString();
-        }
-        setInterval(updateTimer, 60000); updateTimer();
-
-        // --- BOUTON NON ---
-        const noBtn = document.getElementById('noBtn');
-        const moveButton = () => {
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = `${x}px`;
-            noBtn.style.top = `${y}px`;
-        };
-        noBtn.addEventListener('mouseover', moveButton);
-        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveButton(); });
-
-        // --- ACTION OUI ---
-        document.getElementById('yesBtn').addEventListener('click', () => {
-            document.getElementById('setupContent').classList.add('hidden');
-            document.getElementById('successContent').classList.remove('hidden');
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ff8fa3', '#ffffff'] });
-        });
-
-        // --- FOND ÉTOILÉ ---
-        const canvas = document.getElementById('starCanvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        function initStars() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            stars = [];
-            for(let i=0; i<200; i++) {
-                stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*2, opacity: Math.random() });
-            }
-        }
-        function drawStars() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            stars.forEach(s => {
-                ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill();
-            });
-            requestAnimationFrame(drawStars);
-        }
-        window.addEventListener('resize', initStars);
-        initStars(); drawStars();
-    </script>
-</body>
-</html>
+            <div id="restaurantInfo">
+                <p style="font-size: 0.9rem; margin-bottom: 5px;">
