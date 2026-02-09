@@ -38,15 +38,35 @@
         .timer-label { display: block; text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; color: var(--a); }
 
         .btn-group { display: flex; flex-direction: column; gap: 15px; }
+        
         .glow-button { 
             color: white; border: none; padding: 15px; border-radius: 50px; 
             font-size: 1.1rem; font-weight: 600; cursor: pointer; 
-            transition: transform 0.2s, box-shadow 0.2s; width: 100%;
+            transition: all 0.3s ease; width: 100%;
             text-decoration: none; display: inline-block;
         }
+
         .yes-style { background: var(--p); box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4); }
-        .yes-style:hover { transform: scale(1.05); }
         .no-style { background: var(--dr); position: relative; z-index: 100; }
+
+        /* Style de la box "Reveal" */
+        .reveal-box {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px dashed var(--a);
+            padding: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+            animation: pulse 2s infinite;
+        }
+        .reveal-box:hover { background: rgba(255, 255, 255, 0.25); }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
 
         .main-heart { 
             background-color: var(--p); height: 30px; width: 30px; 
@@ -62,7 +82,6 @@
 
         @keyframes heartbeat { 0%, 100% { transform: rotate(-45deg) scale(1); } 50% { transform: rotate(-45deg) scale(1.2); } }
         .hidden { display: none !important; }
-        .celebration-text { font-size: 1.1rem; margin-top: 15px; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -84,11 +103,15 @@
 
         <div id="successContent" class="hidden">
             <h2 class="title-font">C'est un rendez-vous ! ❤️</h2>
-            <div style="font-size: 4rem; margin: 10px;">💖</div>
-            <p class="celebration-text">
-                <strong>See u at 7:30PM ON THURSDAY cutie :)</strong><br>
-                <small>(Ta surprise s'est ouverte dans un nouvel onglet)</small>
-            </p>
+            <div style="font-size: 3.5rem; margin: 10px;">💖</div>
+            
+            <p style="font-size: 0.9rem; opacity: 0.9;">See u at 7:30PM ON THURSDAY cutie :)</p>
+            
+            <div class="reveal-box" onclick="window.open('https://share.google/pbk0ZcziFNFKalzCQ', '_blank')">
+                <span style="font-weight: 600; font-size: 1rem;">📍 Tap to reveal the meeting point</span>
+            </div>
+
+            <p style="margin-top: 20px; font-size: 0.8rem; font-style: italic;">Chaque minute compte avec toi.<br>Vivement le 14 février !</p>
         </div>
     </div>
 
@@ -115,15 +138,9 @@
 
         // --- ACTION OUI ---
         document.getElementById('yesBtn').addEventListener('click', () => {
-            // 1. Cacher la question / Montrer le succès
             document.getElementById('setupContent').classList.add('hidden');
             document.getElementById('successContent').classList.remove('hidden');
-            
-            // 2. Lancer les confettis
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ff8fa3', '#ffffff'] });
-
-            // 3. Ouvrir ton lien Google Photos
-            window.open("https://share.google/pbk0ZcziFNFKalzCQ", "_blank");
         });
 
         // --- FOND ÉTOILÉ ---
