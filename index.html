@@ -43,6 +43,7 @@
             color: white; border: none; padding: 15px; border-radius: 50px; 
             font-size: 1.1rem; font-weight: 600; cursor: pointer; 
             transition: all 0.3s ease; width: 100%;
+            text-decoration: none; display: inline-block;
         }
 
         .yes-style { background: var(--p); box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4); }
@@ -97,7 +98,7 @@
     </style>
 </head>
 <body>
-    <audio id="bgMusic" loop preload="auto">
+    <audio id="bgMusic" loop>
         <source src="https://www.bensound.com/bensound-music/bensound-thejazzpiano.mp3" type="audio/mpeg">
     </audio>
 
@@ -136,7 +137,7 @@
 
     <script>
         const music = document.getElementById('bgMusic');
-        music.volume = 0.4;
+        music.volume = 0.4; // Volume doux
 
         // --- COMPTEUR ---
         const firstDate = new Date(2024, 10, 30); 
@@ -158,24 +159,14 @@
         noBtn.addEventListener('mouseover', moveButton);
         noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveButton(); });
 
-        // --- ACTION OUI (Lance la musique et les confettis) ---
+        // --- ACTION OUI ---
         document.getElementById('yesBtn').addEventListener('click', () => {
-            // Lancement immédiat de la musique
-            music.play().then(() => {
-                console.log("Musique lancée avec succès");
-            }).catch(error => {
-                console.log("Lecture auto bloquée par le navigateur : ", error);
-            });
-
             document.getElementById('setupContent').classList.add('hidden');
             document.getElementById('successContent').classList.remove('hidden');
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ff8fa3', '#ffffff'] });
             
-            confetti({ 
-                particleCount: 150, 
-                spread: 70, 
-                origin: { y: 0.6 }, 
-                colors: ['#ff4d6d', '#ff8fa3', '#ffffff'] 
-            });
+            // Lancer la musique au premier clic (obligatoire pour les navigateurs)
+            music.play().catch(e => console.log("Audio play blocked"));
         });
 
         // --- ACTION REVEAL ---
